@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tugas_modul4/models/user.dart';
+import 'package:tugas_modul4/screens/main_page.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,15 +16,23 @@ class _LoginScreenState extends State<LoginScreen> {
   void _login() {
     String username = _usernameController.text;
     String password = _passwordController.text;
+    final users = [user1, user2, user3, user4];
 
-    if (username == 'admin' && password == 'admin') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login Berhasil!'), backgroundColor: Colors.green),
+    final isValidUser = users.any(
+      (user) => username == user.username && password == user.password,
+    );
+
+    if (isValidUser) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MainPage()),
       );
-      // Di sini kamu bisa navigasi ke Dashboard: Navigator.push(...)
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Username atau Password Salah'), backgroundColor: Colors.red),
+        const SnackBar(
+          content: Text('Username atau Password Salah'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -41,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            
+
             // Input Username
             TextField(
               controller: _usernameController,
@@ -56,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
             // Input Password (Obscure)
             TextField(
               controller: _passwordController,
-              obscureText: true, 
+              obscureText: true,
               decoration: const InputDecoration(
                 labelText: 'Password',
                 border: OutlineInputBorder(),
