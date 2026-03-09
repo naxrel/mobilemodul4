@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tugas_modul4/screens/calculator_screen.dart';
 import 'package:tugas_modul4/screens/stopwatch_screen.dart';
+import 'package:tugas_modul4/screens/prime_screen.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -12,16 +13,11 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
-  final List<String> _titles = ['Calculator', 'Search', 'Stopwatch'];
+  final List<String> _titles = ['Calculator', 'Cek angka', 'Stopwatch'];
 
   final List<Widget> _pages = const [
     CalculatorView(),
-    Center(
-      child: Text(
-        'Halaman Search',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    ),
+    PrimeScreen(),
     StopwatchHomePage(),
   ];
 
@@ -42,7 +38,7 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.calculate),
             label: 'Calculator',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+          BottomNavigationBarItem(icon: Icon(Icons.numbers_sharp), label: 'Cek angka'),
           BottomNavigationBarItem(
             icon: Icon(Icons.timer_3_select),
             label: 'Stopwatch',
