@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tugas_modul4/screens/calculator_screen.dart';
+import 'package:tugas_modul4/screens/stopwatch_screen.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -21,12 +22,7 @@ class _MainPageState extends State<MainPage> {
         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
     ),
-    Center(
-      child: Text(
-        'Halaman Stopwatch',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    ),
+    StopwatchHomePage(),
   ];
 
   @override
