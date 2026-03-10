@@ -4,6 +4,8 @@ import 'package:tugas_modul4/screens/pyramid_calculator_page.dart';
 import 'package:tugas_modul4/screens/stopwatch_screen.dart';
 import 'package:tugas_modul4/screens/number_checker_page.dart';
 
+import 'hitung_digit_screen.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -14,13 +16,14 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
-  final List<String> _titles = ['Calculator', 'Cek angka', 'Stopwatch','pyramid'];
+  final List<String> _titles = ['Calculator', 'Cek angka', 'Stopwatch','Pyramid', 'Hitung Digit'];
 
   final List<Widget> _pages = const [
     CalculatorView(),
     NumberCheckerPage(),
     StopwatchScreen(),
     PyramidCalculatorPage(),
+    HitungDigitScreen()
   ];
 
   @override
@@ -29,6 +32,10 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(title: Text(_titles[_selectedIndex])),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.blue[100], // Warna latar belakang
+        selectedItemColor: Colors.blueAccent,   // Warna ikon & teks saat dipilih
+        unselectedItemColor: Colors.white,
         currentIndex: _selectedIndex,
         onTap: (index) {
           setState(() {
@@ -47,8 +54,9 @@ class _MainPageState extends State<MainPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.timer_3_select),
-            label: 'Stopwatch',
+            label: 'Pyramid',
           ),
+          BottomNavigationBarItem(icon: Icon(Icons.pin), label: 'Hitung Digit'),
         ],
       ),
     );
