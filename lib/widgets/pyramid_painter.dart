@@ -169,7 +169,9 @@ class PyramidPainter extends CustomPainter {
 
     // ── Dimension lines ──
     _drawDimension(canvas, bfr, bbr, '${base.toStringAsFixed(1)}', false);
-    _drawDimension(canvas, apex, bfr, '${height.toStringAsFixed(1)}', true);
+    // Height: vertical line from apex down to base center
+    final baseCenter = Offset(cx, cy);
+    _drawDimension(canvas, apex, baseCenter, '${height.toStringAsFixed(1)}', true);
 
     // ── Apex glow ──
     final glowPaint = Paint()
