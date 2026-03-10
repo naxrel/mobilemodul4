@@ -49,7 +49,7 @@ class PyramidPainter extends CustomPainter {
 
     // ── Draw grid floor ──
     final gridPaint = Paint()
-      ..color = const Color(0xFFE8A020).withOpacity(0.06)
+      ..color = Colors.blueAccent.withOpacity(0.08)
       ..strokeWidth = 1
       ..style = PaintingStyle.stroke;
 
@@ -64,7 +64,7 @@ class PyramidPainter extends CustomPainter {
 
     // ── Shadow ellipse ──
     final shadowPaint = Paint()
-      ..color = const Color(0xFFE8A020).withOpacity(0.08)
+      ..color = Colors.blueAccent.withOpacity(0.10)
       ..style = PaintingStyle.fill;
     canvas.drawOval(
       Rect.fromCenter(
@@ -77,7 +77,7 @@ class PyramidPainter extends CustomPainter {
 
     // ── Back faces (darker) ──
     final backFacePaint = Paint()
-      ..color = const Color(0xFF1A1100)
+      ..color = const Color(0xFFB0BEC5)
       ..style = PaintingStyle.fill;
 
     // Back-left triangle
@@ -98,7 +98,7 @@ class PyramidPainter extends CustomPainter {
 
     // ── Base ──
     final basePaint = Paint()
-      ..color = const Color(0xFF2A1800)
+      ..color = const Color(0xFF90A4AE)
       ..style = PaintingStyle.fill;
 
     final basePath = Path()
@@ -116,8 +116,8 @@ class PyramidPainter extends CustomPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          const Color(0xFFE8A020).withOpacity(0.9),
-          const Color(0xFF7A5000),
+          Colors.blueAccent.withOpacity(0.9),
+          const Color(0xFF1565C0),
         ],
       ).createShader(Rect.fromPoints(apex, bfr))
       ..style = PaintingStyle.fill;
@@ -135,8 +135,8 @@ class PyramidPainter extends CustomPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          const Color(0xFFD49018).withOpacity(0.7),
-          const Color(0xFF4A3000),
+          Colors.blue.withOpacity(0.7),
+          const Color(0xFF0D47A1),
         ],
       ).createShader(Rect.fromPoints(apex, bfl))
       ..style = PaintingStyle.fill;
@@ -150,7 +150,7 @@ class PyramidPainter extends CustomPainter {
 
     // ── Edges ──
     final edgePaint = Paint()
-      ..color = const Color(0xFFE8A020).withOpacity(0.8)
+      ..color = Colors.blueAccent.withOpacity(0.8)
       ..strokeWidth = 1.5
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
@@ -173,17 +173,17 @@ class PyramidPainter extends CustomPainter {
 
     // ── Apex glow ──
     final glowPaint = Paint()
-      ..color = const Color(0xFFE8A020).withOpacity(0.4)
+      ..color = Colors.blueAccent.withOpacity(0.4)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
     canvas.drawCircle(apex, 5, glowPaint);
     canvas.drawCircle(
-        apex, 3, Paint()..color = const Color(0xFFFFD080));
+        apex, 3, Paint()..color = const Color(0xFF82B1FF));
   }
 
   void _drawDimension(
       Canvas canvas, Offset a, Offset b, String label, bool isHeight) {
     final dimPaint = Paint()
-      ..color = const Color(0xFF555555)
+      ..color = Colors.blueGrey
       ..strokeWidth = 1
       ..style = PaintingStyle.stroke;
 
@@ -200,8 +200,8 @@ class PyramidPainter extends CustomPainter {
     final tp = TextPainter(
       text: TextSpan(
         text: label,
-        style: const TextStyle(
-          color: Color(0xFF666666),
+        style: TextStyle(
+          color: Colors.blueGrey[600],
           fontSize: 10,
           fontFamily: 'monospace',
         ),

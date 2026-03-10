@@ -109,60 +109,21 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D0D0D),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               const SizedBox(height: 10),
-              Row(
-                children: [
-                  Container(
-                    width: 4,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE8A020),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'PYRAMID',
-                        style: TextStyle(
-                          color: Color(0xFFE8A020),
-                          fontSize: 22,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 6,
-                        ),
-                      ),
-                      Text(
-                        'Calculator',
-                        style: TextStyle(
-                          color: Color(0xFF888888),
-                          fontSize: 13,
-                          letterSpacing: 2,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 28),
 
               // 3D Pyramid Visualization
               Container(
                 height: 260,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF111111),
+                  color: Colors.blueGrey[50],
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: const Color(0xFF222222)),
+                  border: Border.all(color: Colors.blueGrey.shade200),
                 ),
                 child: AnimatedBuilder(
                   animation: Listenable.merge([_rotateAnim, _pulseAnim]),
@@ -186,17 +147,17 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF111111),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: const Color(0xFF222222)),
+                  border: Border.all(color: Colors.blueGrey.shade200),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'DIMENSI',
                       style: TextStyle(
-                        color: Color(0xFF888888),
+                        color: Colors.blueGrey[600],
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 3,
@@ -222,8 +183,8 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
                       child: ElevatedButton(
                         onPressed: _calculate,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFE8A020),
-                          foregroundColor: Colors.black,
+                          backgroundColor: Colors.blueAccent,
+                          foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -251,17 +212,17 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF111111),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xFF222222)),
+                    border: Border.all(color: Colors.blueGrey.shade200),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'HASIL',
                         style: TextStyle(
-                          color: Color(0xFF888888),
+                          color: Colors.blueGrey[600],
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 3,
@@ -273,31 +234,31 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
                         formula: 'V = ⅓ × a² × t',
                         value: _volume,
                         unit: 'cm³',
-                        color: const Color(0xFFE8A020),
+                        color: Colors.blueAccent,
                       ),
-                      const Divider(color: Color(0xFF1E1E1E), height: 24),
+                      Divider(color: Colors.blueGrey.shade100, height: 24),
                       _buildResult(
                         label: 'Luas Selimut',
                         formula: 'L.sel = 2 × a × s',
                         value: _lateralArea,
                         unit: 'cm²',
-                        color: const Color(0xFF4ECDC4),
+                        color: Colors.teal,
                       ),
-                      const Divider(color: Color(0xFF1E1E1E), height: 24),
+                      Divider(color: Colors.blueGrey.shade100, height: 24),
                       _buildResult(
                         label: 'Luas Permukaan Total',
                         formula: 'L = a² + 2 × a × s',
                         value: _totalArea,
                         unit: 'cm²',
-                        color: const Color(0xFFFF6B6B),
+                        color: Colors.redAccent,
                       ),
-                      const Divider(color: Color(0xFF1E1E1E), height: 24),
+                      Divider(color: Colors.blueGrey.shade100, height: 24),
                       _buildResult(
                         label: 'Tinggi Selimut (s)',
                         formula: 's = √((a/2)² + t²)',
                         value: _slantHeight,
                         unit: 'cm',
-                        color: const Color(0xFFA78BFA),
+                        color: Colors.deepPurpleAccent,
                       ),
                     ],
                   ),
@@ -309,17 +270,17 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0A0A0A),
+                    color: Colors.blueGrey[50],
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: const Color(0xFF1A1A1A)),
+                    border: Border.all(color: Colors.blueGrey.shade200),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'KETERANGAN',
                         style: TextStyle(
-                          color: Color(0xFF555555),
+                          color: Colors.blueGrey[400],
                           fontSize: 10,
                           letterSpacing: 2,
                         ),
@@ -327,8 +288,8 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
                       const SizedBox(height: 8),
                       Text(
                         'a = panjang alas   t = tinggi   s = tinggi selimut\na = $_base cm   t = $_height cm   s = ${_slantHeight.toStringAsFixed(2)} cm',
-                        style: const TextStyle(
-                          color: Color(0xFF444444),
+                        style: TextStyle(
+                          color: Colors.blueGrey[600],
                           fontSize: 12,
                           height: 1.6,
                           fontFamily: 'monospace',
@@ -357,25 +318,25 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
       controller: controller,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       style: const TextStyle(
-        color: Colors.white,
+        color: Colors.black87,
         fontSize: 16,
         fontWeight: FontWeight.w600,
       ),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Color(0xFF666666), fontSize: 13),
-        prefixIcon: Icon(icon, color: const Color(0xFFE8A020), size: 20),
+        labelStyle: TextStyle(color: Colors.blueGrey[400], fontSize: 13),
+        prefixIcon: Icon(icon, color: Colors.blueAccent, size: 20),
         suffixText: unit,
-        suffixStyle: const TextStyle(color: Color(0xFFE8A020), fontSize: 13),
+        suffixStyle: const TextStyle(color: Colors.blueAccent, fontSize: 13),
         filled: true,
-        fillColor: const Color(0xFF1A1A1A),
+        fillColor: Colors.blueGrey[50],
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE8A020), width: 1.5),
+          borderSide: const BorderSide(color: Colors.blueAccent, width: 1.5),
         ),
       ),
       onChanged: (_) => _calculate(),
@@ -406,7 +367,7 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
             children: [
               Text(
                 label,
-                style: const TextStyle(color: Color(0xFF888888), fontSize: 12),
+                style: TextStyle(color: Colors.blueGrey[500], fontSize: 12),
               ),
               Text(
                 formula,
@@ -431,6 +392,3 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
     );
   }
 }
-
-// ─── 3D Pyramid Painter ──────────────────────────────────────────────────────
-
