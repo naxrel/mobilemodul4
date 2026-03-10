@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-void main() {
-  runApp(const StopwatchApp());
-}
+// void main() {
+//   runApp(const StopwatchApp());
+// }
 
-class StopwatchApp extends StatelessWidget {
-  const StopwatchApp({super.key});
+// class StopwatchApp extends StatelessWidget {
+//   const StopwatchApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: const StopwatchHomePage(),
+//     );
+//   }
+// }
+
+class StopwatchScreen extends StatefulWidget {
+  const StopwatchScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const StopwatchHomePage(),
-    );
-  }
+  State<StopwatchScreen> createState() => _StopwatchHomePageState();
 }
 
-class StopwatchHomePage extends StatefulWidget {
-  const StopwatchHomePage({super.key});
-
-  @override
-  State<StopwatchHomePage> createState() => _StopwatchHomePageState();
-}
-
-class _StopwatchHomePageState extends State<StopwatchHomePage> {
+class _StopwatchHomePageState extends State<StopwatchScreen> {
   final Stopwatch _stopwatch = Stopwatch();
   Timer? _timer;
 

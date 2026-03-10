@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const PrimeScreen());
-}
+// void main() {
+//   runApp(const PrimeScreen());
+// }
 
-class PrimeScreen extends StatelessWidget {
-  const PrimeScreen({super.key});
+// class PrimeScreen extends StatelessWidget {
+//   const PrimeScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Cek angka',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const NumberCheckerPage(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Cek angka',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: const NumberCheckerPage(),
+//     );
+//   }
+// }
 
 class NumberCheckerPage extends StatefulWidget {
   const NumberCheckerPage({super.key});
