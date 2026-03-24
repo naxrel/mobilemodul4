@@ -2,33 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import '../widgets/pyramid_painter.dart';
 
-
-
-// void main() {
-//   runApp(const PyramidApp());
-// }
-
-// class PyramidApp extends StatelessWidget {
-//   const PyramidApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Pyramid Calculator',
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(
-//           seedColor: const Color(0xFFE8A020),
-//           brightness: Brightness.dark,
-//         ),
-//         useMaterial3: true,
-//         fontFamily: 'Helvetica',
-//       ),
-//       home: const PyramidCalculatorPage(),
-//     );
-//   }
-// }
-
 class PyramidCalculatorPage extends StatefulWidget {
   const PyramidCalculatorPage({super.key});
 
@@ -38,8 +11,12 @@ class PyramidCalculatorPage extends StatefulWidget {
 
 class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
     with TickerProviderStateMixin {
-  final TextEditingController _baseController = TextEditingController(text: '6');
-  final TextEditingController _heightController = TextEditingController(text: '8');
+  final TextEditingController _baseController = TextEditingController(
+    text: '6',
+  );
+  final TextEditingController _heightController = TextEditingController(
+    text: '8',
+  );
 
   double _base = 6;
   double _height = 8;
@@ -67,9 +44,10 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
       duration: const Duration(milliseconds: 1500),
     )..repeat(reverse: true);
 
-    _rotateAnim = Tween<double>(begin: 0, end: 2 * math.pi).animate(
-      CurvedAnimation(parent: _rotateController, curve: Curves.linear),
-    );
+    _rotateAnim = Tween<double>(
+      begin: 0,
+      end: 2 * math.pi,
+    ).animate(CurvedAnimation(parent: _rotateController, curve: Curves.linear));
 
     _pulseAnim = Tween<double>(begin: 0.97, end: 1.03).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),

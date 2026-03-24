@@ -1,24 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-// void main() {
-//   runApp(const StopwatchApp());
-// }
-
-// class StopwatchApp extends StatelessWidget {
-//   const StopwatchApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: const StopwatchHomePage(),
-//     );
-//   }
-// }
+import 'dart:ui';
 
 class StopwatchScreen extends StatefulWidget {
   const StopwatchScreen({super.key});
@@ -30,6 +12,8 @@ class StopwatchScreen extends StatefulWidget {
 class _StopwatchHomePageState extends State<StopwatchScreen> {
   final Stopwatch _stopwatch = Stopwatch();
   Timer? _timer;
+
+  final List<String> _laps = [];
 
   String _formatTime(int milliseconds) {
     int hundreds = (milliseconds / 10).truncate() % 100;
@@ -60,7 +44,17 @@ class _StopwatchHomePageState extends State<StopwatchScreen> {
     _stopwatch.reset();
     _stopwatch.stop();
     _timer?.cancel();
+    _laps.clear();
     setState(() {});
+  }
+
+  void _recordTime() {
+    // Syarat: Waktu sudah berjalan (> 0) dan jumlah catatan kurang dari 10
+    if (_stopwatch.elapsedMilliseconds > 0 && _laps.length < 10) {
+      setState(() {
+        _laps.insert(0, _formatTime(_stopwatch.elapsedMilliseconds));
+      });
+    }
   }
 
   @override
@@ -72,9 +66,7 @@ class _StopwatchHomePageState extends State<StopwatchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-      ),
+      appBar: AppBar(centerTitle: true),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -88,27 +80,72 @@ class _StopwatchHomePageState extends State<StopwatchScreen> {
               ),
             ),
             const SizedBox(height: 40.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Wrap(
+              spacing: 10,
+              alignment: WrapAlignment.center,
               children: [
                 ElevatedButton(
                   onPressed: _stopwatch.isRunning ? null : _startTimer,
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                  ),
                   child: const Text('Mulai'),
                 ),
-                const SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: _stopwatch.isRunning ? _stopTimer : null,
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                  ),
                   child: const Text('Stop'),
                 ),
-                const SizedBox(width: 20),
                 ElevatedButton(
-                  onPressed: _resetTimer,
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                  onPressed:
+                      (_stopwatch.elapsedMilliseconds > 0 && _laps.length < 10)
+                      ? _recordTime
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Catat'),
+                ),
+
+                ElevatedButton(
+                  onPressed: () {
+                    _resetTimer();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey,
+                    foregroundColor: Colors.white,
+                  ),
                   child: const Text('Reset'),
                 ),
               ],
+            ),
+            const SizedBox(height: 30),
+
+            const Text(
+              "Catatan Waktu:",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const Divider(),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _laps.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: CircleAvatar(
+                      child: Text("${_laps.length - index}"),
+                    ),
+                    title: Text(
+                      _laps[index],
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),

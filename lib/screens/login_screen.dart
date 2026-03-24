@@ -14,20 +14,25 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   void _login() {
-    String username = _usernameController.text;
-    String password = _passwordController.text;
+    String usernameInput = _usernameController.text;
+    String passwordInput = _passwordController.text;
     final users = [user1, user2, user3, user4];
 
-    final isValidUser = users.any(
-      (user) => username == user.username && password == user.password,
+    // Mencari user yang cocok tanpa try-catch
+    // Kita pakai cast ke User? (nullable) supaya bisa menangani kalau tidak ketemu
+    final User? foundUser = users.cast<User?>().firstWhere(
+      (u) => u!.username == usernameInput && u.password == passwordInput,
+      orElse: () => null,
     );
 
-    if (isValidUser) {
+    if (foundUser != null) {
+      // Kalau ketemu, yang dikirim ke MainPage adalah foundUser.nama (bukan username)
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const MainPage()),
+        MaterialPageRoute(builder: (context) => MainPage(nama: foundUser.nama)),
       );
     } else {
+      // Kalau null (nggak ketemu), munculin error
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Username atau Password Salah'),
