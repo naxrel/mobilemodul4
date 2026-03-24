@@ -62,6 +62,8 @@ class _CalculatorViewState extends State<CalculatorView> {
                   alignment: Alignment.centerRight,
                   child: Text(
                     userInput,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
                     style: const TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tugas_modul4/screens/calculator_screen.dart';
+import 'package:tugas_modul4/screens/date_converter_page.dart';
 import 'package:tugas_modul4/screens/pyramid_calculator_page.dart';
 import 'package:tugas_modul4/screens/stopwatch_screen.dart';
 import 'package:tugas_modul4/screens/number_checker_page.dart';
@@ -16,14 +17,15 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
-  final List<String> _titles = ['Calculator', 'Cek angka', 'Stopwatch','Pyramid', 'Hitung Digit'];
+  final List<String> _titles = ['Calculator', 'Cek angka', 'Stopwatch','Pyramid', 'Hitung Digit', 'Convert Tanggal'];
 
-  final List<Widget> _pages = const [
-    CalculatorView(),
-    NumberCheckerPage(),
-    StopwatchScreen(),
-    PyramidCalculatorPage(),
-    HitungDigitScreen()
+  final List<Widget> _pages = [
+    const CalculatorView(),
+    const NumberCheckerPage(),
+    const StopwatchScreen(),
+    const PyramidCalculatorPage(),
+    const HitungDigitScreen(),
+    DateConverterPage()
   ];
 
   @override
@@ -57,6 +59,8 @@ class _MainPageState extends State<MainPage> {
             label: 'Pyramid',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.pin), label: 'Hitung Digit'),
+          BottomNavigationBarItem(icon: Icon(Icons.date_range_outlined), label: 'Conver Tangal'),
+
         ],
       ),
     );
