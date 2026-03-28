@@ -8,7 +8,9 @@ import 'package:tugas_modul4/screens/number_checker_page.dart';
 import 'hitung_digit_screen.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final String nama;
+
+  const MainPage({super.key, required this.nama});
 
   @override
   State<MainPage> createState() => _MainPageState();
