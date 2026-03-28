@@ -8,6 +8,21 @@ class DateConverterPage extends StatefulWidget {
 }
 
 class _DateConverterPageState extends State<DateConverterPage> {
+  static const List<String> _hijriMonths = [
+    'Muharram',
+    'Safar',
+    'Rabiul Awal',
+    'Rabiul Akhir',
+    'Jumadil Awal',
+    'Jumadil Akhir',
+    'Rajab',
+    'Syaban',
+    'Ramadan',
+    'Syawal',
+    'Zulkaidah',
+    'Zulhijah',
+  ];
+
   bool isMasehiToHijri = true;
   DateTime selectedDate = DateTime.now();
   late HijriCalendar _selectedHijri;
@@ -22,20 +37,34 @@ class _DateConverterPageState extends State<DateConverterPage> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
+        _selectedHijri = HijriCalendar.fromDate(picked);
       });
     }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _selectedHijri = HijriCalendar.fromDate(selectedDate);
   }
+
+  int _getHijriMonthDays(int year, int month) {
+    final DateTime monthStart = _selectedHijri.hijriToGregorian(year, month, 1);
+    final int nextMonth = month == 12 ? 1 : month + 1;
+    final int nextYear = month == 12 ? year + 1 : year;
+    final DateTime nextMonthStart =
+        _selectedHijri.hijriToGregorian(nextYear, nextMonth, 1);
+    return nextMonthStart.difference(monthStart).inDays;
+  }
+
+  String get _selectedHijriText {
+    return '${_selectedHijri.hDay} ${_hijriMonths[_selectedHijri.hMonth - 1]} ${_selectedHijri.hYear} H';
+  }
+
   String get masehiToHijri {
     var h = HijriCalendar.fromDate(selectedDate);
     // Format: Tanggal NamaBulan Tahun H
-    return "${h.hDay} ${h.longMonthName} ${h.hYear} H";
+    return '${h.hDay} ${_hijriMonths[h.hMonth - 1]} ${h.hYear} H';
   }
 
   // FUNGSI 2: Konversi Hijriah ke Masehi
@@ -47,23 +76,6 @@ class _DateConverterPageState extends State<DateConverterPage> {
         _selectedHijri.hDay
     );
     return DateFormat('dd MMMM yyyy', 'id_ID').format(g);
-  }
-
-  // FUNGSI 3: Handler saat User pilih tanggal Masehi
-  Future<void> _pilihMasehi() async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null) {
-      setState(() {
-        selectedDate = picked;
-        // Sinkronkan objek hijri agar saat di-swap datanya sama
-        _selectedHijri = HijriCalendar.fromDate(picked);
-      });
-    }
   }
 
   void toggleDirection() {
@@ -98,7 +110,7 @@ class _DateConverterPageState extends State<DateConverterPage> {
                       label: isMasehiToHijri ? "Dari Masehi" : "Dari Hijriah",
                       value: isMasehiToHijri
                           ? DateFormat('dd MMMM yyyy', 'id_ID').format(selectedDate)
-                          : "5 Syawal 1447 H", // Simulasi input Hijriah
+                          : _selectedHijriText,
                       isInput: true,
                     ),
 
@@ -169,37 +181,114 @@ class _DateConverterPageState extends State<DateConverterPage> {
   }
 
   Future<void> _pilihTanggalHijriahCustom(BuildContext context) async {
-    final HijriCalendar now = HijriCalendar.now();
+    int tempDay = _selectedHijri.hDay;
+    int tempMonth = _selectedHijri.hMonth;
+    int tempYear = _selectedHijri.hYear;
+    int tempMaxDays = _getHijriMonthDays(tempYear, tempMonth);
 
-    // Kita buat dialog sederhana berisi list bulan & tahun
-    // Atau cara paling simpel: gunakan showDialog
-    showDialog(
+    await showDialog<void>(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text("Pilih Tanggal Hijriah"),
+        return StatefulBuilder(
+          builder: (context, setDialogState) => AlertDialog(
+          title: const Text('Pilih Tanggal Hijriah'),
           content: Container(
             width: double.maxFinite,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Di sini kamu bisa buat UI slider atau list sederhana
-                // Sebagai contoh cepat, kita simulasikan pemilihan:
-                ListTile(
-                  title: Text("Gunakan Tanggal Hari Ini"),
-                  subtitle: Text(now.fullDate()),
-                  onTap: () {
-                    setState(() {
-                      // logic konversi balik ke masehi
-                      selectedDate = now.hijriToGregorian(now.hYear, now.hMonth, now.hDay);
+                DropdownButtonFormField<int>(
+                  value: tempDay,
+                  decoration: const InputDecoration(labelText: 'Hari'),
+                  items: List.generate(tempMaxDays, (index) => index + 1)
+                      .map(
+                        (day) => DropdownMenuItem<int>(
+                          value: day,
+                          child: Text('$day'),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setDialogState(() {
+                      tempDay = value;
                     });
-                    Navigator.pop(context);
                   },
                 ),
-                Text("Tips: Untuk UI yang lebih kompleks, kamu bisa gunakan widget 'CupertinoDatePicker' atau 'WheelPicker' agar tidak error Material 3."),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<int>(
+                  value: tempMonth,
+                  decoration: const InputDecoration(labelText: 'Bulan'),
+                  items: List.generate(12, (index) => index + 1)
+                      .map(
+                        (month) => DropdownMenuItem<int>(
+                          value: month,
+                          child: Text(_hijriMonths[month - 1]),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setDialogState(() {
+                      tempMonth = value;
+                      tempMaxDays = _getHijriMonthDays(tempYear, tempMonth);
+                      if (tempDay > tempMaxDays) {
+                        tempDay = tempMaxDays;
+                      }
+                    });
+                  },
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<int>(
+                  value: tempYear,
+                  decoration: const InputDecoration(labelText: 'Tahun'),
+                  items: List.generate(301, (index) => 1300 + index)
+                      .map(
+                        (year) => DropdownMenuItem<int>(
+                          value: year,
+                          child: Text('$year H'),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setDialogState(() {
+                      tempYear = value;
+                      tempMaxDays = _getHijriMonthDays(tempYear, tempMonth);
+                      if (tempDay > tempMaxDays) {
+                        tempDay = tempMaxDays;
+                      }
+                    });
+                  },
+                ),
               ],
             ),
           ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Batal'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final DateTime masehi =
+                    _selectedHijri.hijriToGregorian(tempYear, tempMonth, tempDay);
+                setState(() {
+                  selectedDate = masehi;
+                  _selectedHijri = HijriCalendar.fromDate(masehi);
+                });
+                Navigator.pop(context);
+              },
+              child: const Text('Pilih'),
+            ),
+          ],
+        ),
         );
       },
     );
