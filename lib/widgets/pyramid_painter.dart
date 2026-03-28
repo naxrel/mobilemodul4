@@ -17,15 +17,18 @@ class PyramidPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    final safeBase = base < 0 ? 0.0 : base;
+    final safeHeight = height < 0 ? 0.0 : height;
+
     final cx = size.width / 2;
     final cy = size.height / 2 + 10;
 
     // Normalize values for drawing
-    final maxDim = math.max(base, height).clamp(1.0, double.infinity);
+    final maxDim = math.max(safeBase, safeHeight).clamp(1.0, double.infinity);
     final drawScale = (size.width * 0.28 / maxDim) * scale;
 
-    final b = base * drawScale;
-    final h = height * drawScale;
+    final b = safeBase * drawScale;
+    final h = safeHeight * drawScale;
 
     // 3D isometric-like projection
     final cos = math.cos(rotateAngle);
@@ -168,10 +171,10 @@ class PyramidPainter extends CustomPainter {
     canvas.drawLine(apex, bbl, edgePaint);
 
     // ── Dimension lines ──
-    _drawDimension(canvas, bfr, bbr, '${base.toStringAsFixed(1)}', false);
+    _drawDimension(canvas, bfr, bbr, '${safeBase.toStringAsFixed(1)}', false);
     // Height: vertical line from apex down to base center
     final baseCenter = Offset(cx, cy);
-    _drawDimension(canvas, apex, baseCenter, '${height.toStringAsFixed(1)}', true);
+    _drawDimension(canvas, apex, baseCenter, '${safeHeight.toStringAsFixed(1)}', true);
 
     // ── Apex glow ──
     final glowPaint = Paint()

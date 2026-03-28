@@ -2,6 +2,33 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import '../widgets/pyramid_painter.dart';
 
+
+
+// void main() {
+//   runApp(const PyramidApp());
+// }
+
+// class PyramidApp extends StatelessWidget {
+//   const PyramidApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Pyramid Calculator',
+//       debugShowCheckedModeBanner: false,
+//       theme: ThemeData(
+//         colorScheme: ColorScheme.fromSeed(
+//           seedColor: const Color(0xFFE8A020),
+//           brightness: Brightness.dark,
+//         ),
+//         useMaterial3: true,
+//         fontFamily: 'Helvetica',
+//       ),
+//       home: const PyramidCalculatorPage(),
+//     );
+//   }
+// }
+
 class PyramidCalculatorPage extends StatefulWidget {
   const PyramidCalculatorPage({super.key});
 
@@ -11,12 +38,8 @@ class PyramidCalculatorPage extends StatefulWidget {
 
 class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
     with TickerProviderStateMixin {
-  final TextEditingController _baseController = TextEditingController(
-    text: '6',
-  );
-  final TextEditingController _heightController = TextEditingController(
-    text: '8',
-  );
+  final TextEditingController _baseController = TextEditingController(text: '6');
+  final TextEditingController _heightController = TextEditingController(text: '8');
 
   double _base = 6;
   double _height = 8;
@@ -24,6 +47,7 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
   double _lateralArea = 0;
   double _totalArea = 0;
   double _slantHeight = 0;
+  String? _minusError;
 
   late AnimationController _rotateController;
   late AnimationController _pulseController;
@@ -44,10 +68,9 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
       duration: const Duration(milliseconds: 1500),
     )..repeat(reverse: true);
 
-    _rotateAnim = Tween<double>(
-      begin: 0,
-      end: 2 * math.pi,
-    ).animate(CurvedAnimation(parent: _rotateController, curve: Curves.linear));
+    _rotateAnim = Tween<double>(begin: 0, end: 2 * math.pi).animate(
+      CurvedAnimation(parent: _rotateController, curve: Curves.linear),
+    );
 
     _pulseAnim = Tween<double>(begin: 0.97, end: 1.03).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
@@ -56,10 +79,36 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
     _calculate();
   }
 
-  void _calculate() {
+  void _calculate({bool showMessage = false}) {
+    final parsedBase = double.tryParse(_baseController.text) ?? 0;
+    final parsedHeight = double.tryParse(_heightController.text) ?? 0;
+
+    if (parsedBase < 0 || parsedHeight < 0) {
+      setState(() {
+        _minusError = 'Nilai alas dan tinggi tidak boleh minus.';
+        // Keep drawing dimensions non-negative to avoid painter geometry errors.
+        _base = math.max(parsedBase, 0);
+        _height = math.max(parsedHeight, 0);
+        _volume = 0;
+        _lateralArea = 0;
+        _totalArea = 0;
+        _slantHeight = 0;
+      });
+
+      if (showMessage) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Input minus tidak diperbolehkan.'),
+          ),
+        );
+      }
+      return;
+    }
+
     setState(() {
-      _base = double.tryParse(_baseController.text) ?? 0;
-      _height = double.tryParse(_heightController.text) ?? 0;
+      _minusError = null;
+      _base = parsedBase;
+      _height = parsedHeight;
 
       // Volume = (1/3) * a^2 * t
       _volume = (1 / 3) * _base * _base * _height;
@@ -110,8 +159,8 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
                       painter: PyramidPainter(
                         rotateAngle: _rotateAnim.value,
                         scale: _pulseAnim.value,
-                        base: _base,
-                        height: _height,
+                        base: math.max(_base, 0),
+                        height: math.max(_height, 0),
                       ),
                       child: Container(),
                     );
@@ -159,7 +208,7 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: _calculate,
+                        onPressed: () => _calculate(showMessage: true),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blueAccent,
                           foregroundColor: Colors.white,
@@ -179,6 +228,17 @@ class _PyramidCalculatorPageState extends State<PyramidCalculatorPage>
                         ),
                       ),
                     ),
+                    if (_minusError != null) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        _minusError!,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
