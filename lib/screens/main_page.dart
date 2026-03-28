@@ -5,6 +5,7 @@ import 'package:tugas_modul4/screens/date_weton_page.dart';
 import 'package:tugas_modul4/screens/pyramid_calculator_page.dart';
 import 'package:tugas_modul4/screens/stopwatch_screen.dart';
 import 'package:tugas_modul4/screens/number_checker_page.dart';
+import 'package:tugas_modul4/screens/birthday_date_page.dart';
 
 import 'hitung_digit_screen.dart';
 
@@ -20,7 +21,16 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
-  final List<String> _titles = ['Calculator', 'Cek angka', 'Stopwatch','Pyramid', 'Hitung Digit', 'Convert Tanggal', 'Weton'];
+  final List<String> _titles = [
+    'Calculator',
+    'Cek angka',
+    'Stopwatch',
+    'Pyramid',
+    'Hitung Digit',
+    'Convert Tanggal',
+    'Weton',
+    'Birthday Checker',
+  ];
 
   final List<Widget> _pages = [
     const CalculatorView(),
@@ -30,6 +40,7 @@ class _MainPageState extends State<MainPage> {
     const HitungDigitScreen(),
     DateConverterPage(),
     const DateWetonPage(),
+    const BirthdayView(),
   ];
 
   @override
@@ -40,7 +51,7 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.blue[100], // Warna latar belakang
-        selectedItemColor: Colors.blueAccent,   // Warna ikon & teks saat dipilih
+        selectedItemColor: Colors.blueAccent, // Warna ikon & teks saat dipilih
         unselectedItemColor: Colors.white,
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -53,7 +64,10 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.calculate),
             label: 'Calculator',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.numbers_sharp), label: 'Cek angka'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.numbers_sharp),
+            label: 'Cek angka',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.timer_3_select),
             label: 'Stopwatch',
@@ -63,9 +77,18 @@ class _MainPageState extends State<MainPage> {
             label: 'Pyramid',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.pin), label: 'Hitung Digit'),
-          BottomNavigationBarItem(icon: Icon(Icons.date_range_outlined), label: 'Conver Tangal'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_view_month), label: 'Weton'),
-
+          BottomNavigationBarItem(
+            icon: Icon(Icons.date_range_outlined),
+            label: 'Conver Tangal',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.date_range_outlined),
+            label: 'Weton',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_view_month),
+            label: 'Birthday Checker',
+          ),
         ],
       ),
     );
