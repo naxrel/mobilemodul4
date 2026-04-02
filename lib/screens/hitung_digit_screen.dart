@@ -10,14 +10,21 @@ class HitungDigitScreen extends StatefulWidget {
 class _HitungDigitScreenState extends State<HitungDigitScreen> {
   final TextEditingController _controller = TextEditingController();
   int _totalDigits = 0;
+  int _sumOfDigits = 0; // Tambahan: State untuk menyimpan hasil jumlah
 
   void _countDigits(String value) {
     // Menghapus semua karakter selain angka (0-9)
-    // Jadi jika user input "100.5", hasilnya tetap 4 digit
     String cleanText = value.replaceAll(RegExp(r'[^0-9]'), '');
+
+    // Logika Penjumlahan Tiap Digit
+    int currentSum = 0;
+    for (int i = 0; i < cleanText.length; i++) {
+      currentSum += int.parse(cleanText[i]);
+    }
 
     setState(() {
       _totalDigits = cleanText.length;
+      _sumOfDigits = currentSum; // Simpan hasil jumlah ke state
     });
   }
 
@@ -30,30 +37,31 @@ class _HitungDigitScreenState extends State<HitungDigitScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              decoration: BoxDecoration(
-                color: Colors.blueAccent.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.blueAccent),
-              ),
-              child: Column(
-                children: [
-                  const Text('Total Karakter Angka:'),
-                  Text(
-                    '$_totalDigits',
-                    style: const TextStyle(
-                      fontSize: 60,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent,
-                    ),
+            // UI untuk Menampilkan Hasil
+            Row(
+              children: [
+                // Box Total Digit
+                Expanded(
+                  child: _buildResultBox(
+                    label: 'Total Digit',
+                    value: '$_totalDigits',
+                    color: Colors.blueAccent,
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(width: 12),
+                // Box Jumlah Angka (Tambahan Baru)
+                Expanded(
+                  child: _buildResultBox(
+                    label: 'Hasil Jumlah',
+                    value: '$_sumOfDigits',
+                    color: Colors.orangeAccent,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 10),
             const Text(
-              'Masukkan angka di bawah untuk melihat total digitnya',
+              'Masukkan angka di bawah untuk melihat total digit dan penjumlahannya',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey),
             ),
@@ -71,11 +79,36 @@ class _HitungDigitScreenState extends State<HitungDigitScreen> {
                 filled: true,
                 fillColor: Colors.grey[100],
               ),
-              onChanged: _countDigits, // Otomatis update saat mengetik
+              onChanged: _countDigits,
             ),
             const SizedBox(height: 40),
           ],
         ),
+      ),
+    );
+  }
+
+  // Helper Widget agar UI tetap bersih (Clean Code)
+  Widget _buildResultBox({required String label, required String value, required Color color}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color),
+      ),
+      child: Column(
+        children: [
+          Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 40, // Ukuran sedikit diperkecil agar pas di Row
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+        ],
       ),
     );
   }
